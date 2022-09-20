@@ -17,7 +17,8 @@ export class GameGateway {
     }
 
     @SubscribeMessage("subscribe-matchmaking")
-    async handleSubscribeMatchmaking(socket: Socket, @MessageBody("username") username: string) {
+    async handleSubscribeMatchmaking(socket: Socket, username: string) {
+        console.log(username);
         this.gameService.addToMatchmaking({ username, socket });
         console.log("Subscribed to matchmaking!");
         const matches = this.gameService.getMatches();
