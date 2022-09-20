@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Verdana, sans-serif;
+}
+
+#score {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+}
+
+.score-item {
+    margin-left: 10px;
+}
+
+#canvas-container {
+    display: flex;
+    justify-content: center;
+}
+
+#canvas {
+    height: 600px;
+    width: 900px;
+    border: solid 5px black;
+    /* background-color: blue; */
+}
