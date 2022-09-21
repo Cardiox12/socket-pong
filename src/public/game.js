@@ -15,8 +15,8 @@ function subscribeMatchmaking() {
     socket.emit("subscribe-matchmaking", username);
 }
 
-socket.on("matchmaking-done", (opponent) => {
-    alert(`You have been matched with ${opponent}`);
+socket.on("matchmaking-done", ({ game_id, opponent }) => {
+    alert(`You have been matched with ${opponent} - game id ${game_id}`);
 });
 
 matchmakingButton.addEventListener("click", subscribeMatchmaking);
