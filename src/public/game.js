@@ -1,7 +1,7 @@
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 // const socket = io("ws://localhost:3000");
 
-let socket;
+const socket = io("ws://localhost:3000");
 
 const matchmakingButton = document.getElementById("matchmaking-button");
 const matchmakingInput = document.getElementById("matchmaking-input");
@@ -12,9 +12,12 @@ function subscribeMatchmaking() {
     if ( username.length == 0 ){
         return;
     }
-    socket = io("ws://localhost:3000");
     socket.emit("subscribe-matchmaking", username);
 }
+
+socket.on("matchmaking-done", (opponent) => {
+    alert(`You have been matched with ${opponent}`);
+});
 
 matchmakingButton.addEventListener("click", subscribeMatchmaking);
 matchmakingInput.addEventListener("keyup", (event) => {
