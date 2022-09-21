@@ -18,13 +18,13 @@ export class GameGateway {
 
     @SubscribeMessage("subscribe-matchmaking")
     async handleSubscribeMatchmaking(socket: Socket, username: string) {
-        console.log(username);
-        this.gameService.addToMatchmaking({ username, socket });
-        console.log("Subscribed to matchmaking!");
+        console.log(`${username} subscribed to matchmaking`);
+        this.gameService.subscribeToMatchmaking({ username, socket });
         const matches = this.gameService.getMatches();
         
         matches.forEach(({ player, opponent }) => {
-            console.log({ player });
+            player.socket.emit("matchmaking-done", opponent.username);
+            opponent.socket.emit("matchmaking-done", player.username);
             console.log(`${player.username} vs ${opponent.username}`);
         })
     }

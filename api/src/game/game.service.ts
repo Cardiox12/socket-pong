@@ -20,7 +20,7 @@ export class GameService {
         this.users = [];
     }
 
-    addToMatchmaking(gameUser: GameUser)  {
+    subscribeToMatchmaking(gameUser: GameUser)  {
         this.users.push(gameUser);
     }
 
