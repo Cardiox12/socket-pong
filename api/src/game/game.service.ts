@@ -1,37 +1,42 @@
 import { Injectable } from "@nestjs/common";
-import { match } from "assert";
+import { randomUUID } from "crypto";
 import { Socket } from "socket.io";
-
-interface GameUser {
-    username: string;
-    socket: Socket
-}
-
-interface GameMatch {
-    player: GameUser;
-    opponent: GameUser;
-}
+import { GameMatch } from "./interfaces/gameMatch";
+import { GameUser } from "./interfaces/gameUser";
+import { Matchmaking } from "./matchmaking/matchmaking";
 
 @Injectable()
 export class GameService {
-    private users: GameUser[];
+    private matchmaking: Matchmaking;
+    // private users: GameUser[];
 
     constructor() {
-        this.users = [];
+        this.matchmaking = new Matchmaking();
     }
 
-    subscribeToMatchmaking(gameUser: GameUser)  {
-        this.users.push(gameUser);
+    /**
+     * Subscribe
+     * Subscribe a user to matchmaking.
+     * @param user
+     */
+    subscribe(user: GameUser)  {
+        this.matchmaking.subscribe(user);
     }
 
-    getMatches() : GameMatch[] {
+    
+    /**
+     * Matches
+     * Matches try to find opponents to users subscribed to matchmaking,
+     * returning a list of GameMatch if matches are available.
+     * @returns GameMatch[]
+     */
+    matches() : GameMatch[] {
         const matches: GameMatch[] = [];
-
-        while ( this.users.length > 1 ){
-            matches.push({
-                player: this.users.shift(),
-                opponent: this.users.shift()
-            });
+        let match = this.matchmaking.getMatch();
+        
+        while ( match != null ){
+            matches.push(match);
+            match = this.matchmaking.getMatch();
         }
         return matches;
     }
